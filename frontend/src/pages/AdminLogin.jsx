@@ -19,21 +19,11 @@ function AdminLogin() {
 
     const [loading, setLoading] = useState(false);
 
-
-    // ==================================================
-    // ADMIN LOGIN
-    // ==================================================
-
     const handleAdminLogin = (e) => {
 
         e.preventDefault();
 
         setError("");
-
-
-        // ----------------------------------------------
-        // CHECK EMPTY FIELDS
-        // ----------------------------------------------
 
         if (!username || !password) {
 
@@ -48,19 +38,9 @@ function AdminLogin() {
 
         setLoading(true);
 
-
-        // ----------------------------------------------
-        // ADMIN CREDENTIALS
-        // ----------------------------------------------
-
         const adminUsername = "Tejesh";
 
         const adminPassword = "Tejesh654321";
-
-
-        // ----------------------------------------------
-        // VALIDATE
-        // ----------------------------------------------
 
         if (
             username === adminUsername &&
@@ -99,11 +79,6 @@ function AdminLogin() {
 
     };
 
-
-    // ==================================================
-    // PAGE
-    // ==================================================
-
     return (
 
         <>
@@ -115,11 +90,6 @@ function AdminLogin() {
 
 
                 <div className="admin-login-card">
-
-
-                    {/* ==================================
-                        HEADER
-                    ================================== */}
 
                     <div className="admin-login-icon">
                         🔐
@@ -140,11 +110,6 @@ function AdminLogin() {
                         Login to access the admin dashboard
                     </p>
 
-
-                    {/* ==================================
-                        ERROR
-                    ================================== */}
-
                     {error && (
 
                         <div className="admin-login-error">
@@ -154,11 +119,6 @@ function AdminLogin() {
                         </div>
 
                     )}
-
-
-                    {/* ==================================
-                        FORM
-                    ================================== */}
 
                     <form
                         onSubmit={
@@ -229,11 +189,6 @@ function AdminLogin() {
 
 
                     </form>
-
-
-                    {/* ==================================
-                        BACK BUTTON
-                    ================================== */}
 
                     <button
                         type="button"
