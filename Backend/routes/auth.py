@@ -7,18 +7,11 @@ from schemas.user_schema import UserCreate
 
 router = APIRouter()
 
-
-# =========================
-# REGISTER API
-# =========================
-
-@router.post("/register")
 def register_user(
     user: UserCreate,
     db: Session = Depends(get_db)
 ):
 
-    # Check whether email already exists
     existing_user = db.query(User).filter(
         User.email == user.email
     ).first()
@@ -29,7 +22,6 @@ def register_user(
             detail="Email already registered"
         )
 
-    # Create new user
     new_user = User(
         name=user.name,
         email=user.email,
@@ -50,36 +42,27 @@ def register_user(
     }
 
 
-# =========================
-# LOGIN API
-# =========================
-
 @router.post("/login")
 def login_user(
     user: UserCreate,
     db: Session = Depends(get_db)
 ):
-
-    # Find user by email
     existing_user = db.query(User).filter(
         User.email == user.email
     ).first()
 
-    # User does not exist
     if not existing_user:
         raise HTTPException(
             status_code=404,
             detail="User not found"
         )
-
-    # Check password
+        
     if existing_user.password != user.password:
         raise HTTPException(
             status_code=400,
             detail="Incorrect password"
         )
 
-    # Successful login
     return {
         "message": "Login successful",
         "user": {
