@@ -16,11 +16,6 @@ router = APIRouter(
     tags=["Theatres"]
 )
 
-
-# ==================================================
-# GET ALL THEATRES
-# ==================================================
-
 @router.get(
     "/",
     response_model=list[TheatreResponse]
@@ -31,11 +26,6 @@ def get_theatres(
 
     return db.query(Theatre).all()
 
-
-# ==================================================
-# GET THEATRES BY LOCATION
-# ==================================================
-
 @router.get("/location/{location_id}")
 def get_theatres_by_location(
     location_id: int,
@@ -45,11 +35,6 @@ def get_theatres_by_location(
     return db.query(Theatre).filter(
         Theatre.location_id == location_id
     ).all()
-
-
-# ==================================================
-# ADD THEATRE
-# ==================================================
 
 @router.post(
     "/",
@@ -75,11 +60,6 @@ def create_theatre(
 
     return new_theatre
 
-
-# ==================================================
-# DELETE THEATRE
-# ==================================================
-
 @router.delete("/{theatre_id}")
 def delete_theatre(
     theatre_id: int,
@@ -102,10 +82,6 @@ def delete_theatre(
     return {
         "message": "Theatre deleted successfully"
     }
-
-# ==================================================
-# DELETE ALL THEATRES
-# ==================================================
 
 @router.delete("/admin/delete-all")
 def delete_all_theatres(
