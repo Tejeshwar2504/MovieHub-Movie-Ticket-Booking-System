@@ -21,9 +21,6 @@ function Hero() {
 
         <section className="hero">
 
-            {/* ==========================================
-                HERO BACKGROUND
-            ========================================== */}
 
             <div className="hero-background">
 
@@ -34,17 +31,7 @@ function Hero() {
 
             </div>
 
-
-            {/* ==========================================
-                DARK OVERLAY
-            ========================================== */}
-
             <div className="hero-overlay"></div>
-
-
-            {/* ==========================================
-                HERO CONTENT
-            ========================================== */}
 
             <div className="hero-content">
 
@@ -95,11 +82,6 @@ function Hero() {
                 </div>
 
             </div>
-
-
-            {/* ==========================================
-                HERO BOTTOM GRADIENT
-            ========================================== */}
 
             <div className="hero-bottom-fade"></div>
 
