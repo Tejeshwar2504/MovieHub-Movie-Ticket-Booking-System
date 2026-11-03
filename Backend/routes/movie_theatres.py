@@ -14,10 +14,6 @@ router = APIRouter(
 )
 
 
-# ==================================================
-# ADD MOVIE TO THEATRE
-# ==================================================
-
 @router.post("/")
 def add_movie_to_theatre(
     movie_id: int,
@@ -68,10 +64,6 @@ def add_movie_to_theatre(
     return movie_theatre
 
 
-# ==================================================
-# GET THEATRES FOR A MOVIE
-# ==================================================
-
 @router.get("/movie/{movie_id}")
 def get_movie_theatres(
     movie_id: int,
@@ -119,10 +111,6 @@ def get_movie_theatres(
     ]
 
 
-# ==================================================
-# GET MOVIES FOR A THEATRE
-# ==================================================
-
 @router.get("/theatre/{theatre_id}")
 def get_theatre_movies(
     theatre_id: int,
@@ -163,10 +151,6 @@ def get_theatre_movies(
         for movie_theatre, movie in results
     ]
 
-
-# ==================================================
-# DELETE MOVIE FROM THEATRE
-# ==================================================
 
 @router.delete("/{movie_theatre_id}")
 def delete_movie_from_theatre(
