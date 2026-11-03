@@ -18,11 +18,6 @@ function UpcomingMovies() {
     const [error, setError] =
         useState("");
 
-
-    // --------------------------------------------------
-    // Fetch Upcoming Movies
-    // --------------------------------------------------
-
     useEffect(() => {
 
         const fetchUpcomingMovies = async () => {
@@ -46,22 +41,12 @@ function UpcomingMovies() {
                 const data =
                     await response.json();
 
-
-                // ------------------------------------------
-                // Only upcoming movies
-                // ------------------------------------------
-
                 const upcomingMovies =
                     data.filter(
                         (movie) =>
                             movie.movie_type ===
                             "upcoming"
                     );
-
-
-                // ------------------------------------------
-                // Convert database movie data
-                // ------------------------------------------
 
                 const formattedMovies =
                     upcomingMovies.map((movie) => ({
@@ -119,21 +104,11 @@ function UpcomingMovies() {
 
     }, []);
 
-
-    // --------------------------------------------------
-    // Convert YouTube URL to Embed URL
-    // --------------------------------------------------
-
     const getEmbedUrl = (url) => {
 
         if (!url) {
             return "";
         }
-
-
-        // ------------------------------------------
-        // youtu.be URL
-        // ------------------------------------------
 
         if (
             url.includes("youtu.be/")
@@ -150,11 +125,6 @@ function UpcomingMovies() {
             );
 
         }
-
-
-        // ------------------------------------------
-        // youtube.com/watch URL
-        // ------------------------------------------
 
         if (
             url.includes("youtube.com/watch")
@@ -177,11 +147,6 @@ function UpcomingMovies() {
 
     };
 
-
-    // --------------------------------------------------
-    // Loading
-    // --------------------------------------------------
-
     if (loading) {
 
         return (
@@ -202,11 +167,6 @@ function UpcomingMovies() {
 
     }
 
-
-    // --------------------------------------------------
-    // Error
-    // --------------------------------------------------
-
     if (error) {
 
         return (
@@ -226,12 +186,7 @@ function UpcomingMovies() {
         );
 
     }
-
-
-    // --------------------------------------------------
-    // No upcoming movies
-    // --------------------------------------------------
-
+    
     if (movies.length === 0) {
 
         return (
@@ -251,11 +206,6 @@ function UpcomingMovies() {
         );
 
     }
-
-
-    // --------------------------------------------------
-    // JSX
-    // --------------------------------------------------
 
     return (
 
