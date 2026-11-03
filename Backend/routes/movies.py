@@ -18,10 +18,6 @@ router = APIRouter(
 )
 
 
-# =================================================
-# GET ALL MOVIES
-# =================================================
-
 @router.get(
     "/",
     response_model=list[MovieResponse]
@@ -33,11 +29,6 @@ def get_movies(
     movies = db.query(Movie).all()
 
     return movies
-
-
-# =================================================
-# GET MOVIE BY ID
-# =================================================
 
 @router.get(
     "/{movie_id}",
@@ -60,12 +51,7 @@ def get_movie(
         )
 
     return movie
-
-
-# =================================================
-# ADD MOVIE
-# =================================================
-
+    
 @router.post(
     "/",
     response_model=MovieResponse
@@ -116,11 +102,6 @@ def create_movie(
     db.refresh(new_movie)
 
     return new_movie
-
-
-# =================================================
-# UPDATE MOVIE
-# =================================================
 
 @router.put(
     "/{movie_id}",
@@ -178,11 +159,6 @@ def update_movie(
     db.refresh(existing_movie)
 
     return existing_movie
-
-
-# =================================================
-# DELETE MOVIE
-# =================================================
 
 @router.delete(
     "/{movie_id}"
