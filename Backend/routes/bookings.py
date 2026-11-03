@@ -18,11 +18,6 @@ router = APIRouter(
     tags=["Bookings"]
 )
 
-
-# ==========================================================
-# CREATE BOOKING
-# ==========================================================
-
 @router.post(
     "/",
     response_model=BookingResponse
@@ -31,10 +26,6 @@ def create_booking(
     booking: BookingCreate,
     db: Session = Depends(get_db)
 ):
-
-    # ------------------------------------------------------
-    # FIND MOVIE
-    # ------------------------------------------------------
 
     movie = db.query(Movie).filter(
         Movie.id == booking.movie_id
@@ -48,21 +39,11 @@ def create_booking(
             detail="Movie not found"
         )
 
-
-    # ------------------------------------------------------
-    # GET REFUND POLICY FROM MOVIE
-    # ------------------------------------------------------
-
     refund_policy = (
         movie.refund_policy
         if movie.refund_policy
         else "refundable"
     )
-
-
-    # ------------------------------------------------------
-    # FIND EXISTING CONFIRMED BOOKINGS
-    # ------------------------------------------------------
 
     existing_bookings = db.query(Booking).filter(
 
@@ -78,11 +59,6 @@ def create_booking(
 
     ).all()
 
-
-    # ------------------------------------------------------
-    # COLLECT BOOKED SEATS
-    # ------------------------------------------------------
-
     booked_seats = []
 
 
@@ -94,40 +70,19 @@ def create_booking(
                 existing_booking.seats
             )
 
-
-    # ------------------------------------------------------
-    # REQUESTED SEATS
-    # ------------------------------------------------------
-
     requested_seats = booking.seats or []
 
-
-    # ------------------------------------------------------
-    # CHECK ALREADY BOOKED SEATS
-    # ------------------------------------------------------
-
     already_booked = []
-
 
     for seat in requested_seats:
 
         if seat in booked_seats:
 
             already_booked.append(seat)
-
-
-    # ------------------------------------------------------
-    # REMOVE DUPLICATE SEATS
-    # ------------------------------------------------------
-
+            
     already_booked = list(
         dict.fromkeys(already_booked)
     )
-
-
-    # ------------------------------------------------------
-    # PREVENT DUPLICATE BOOKING
-    # ------------------------------------------------------
 
     if already_booked:
 
@@ -142,11 +97,6 @@ def create_booking(
 
         )
 
-
-    # ------------------------------------------------------
-    # VALIDATE SEATS
-    # ------------------------------------------------------
-
     if not requested_seats:
 
         raise HTTPException(
@@ -156,11 +106,6 @@ def create_booking(
             detail="Please select at least one seat"
 
         )
-
-
-    # ------------------------------------------------------
-    # CREATE BOOKING
-    # ------------------------------------------------------
 
     new_booking = Booking(
 
@@ -197,11 +142,7 @@ def create_booking(
 
         price=
             booking.price,
-
-        # IMPORTANT
-        # Get this from Movie,
-        # NOT from frontend
-
+        
         refund_policy=
             refund_policy,
 
@@ -209,11 +150,6 @@ def create_booking(
             "confirmed"
 
     )
-
-
-    # ------------------------------------------------------
-    # SAVE
-    # ------------------------------------------------------
 
     db.add(
         new_booking
@@ -229,10 +165,6 @@ def create_booking(
     return new_booking
 
 
-# ==========================================================
-# GET ALL BOOKINGS
-# ==========================================================
-
 @router.get(
     "/",
     response_model=list[BookingResponse]
@@ -245,10 +177,6 @@ def get_bookings(
         Booking
     ).all()
 
-
-# ==========================================================
-# GET USER BOOKINGS
-# ==========================================================
 
 @router.get(
     "/user/{user_id}",
@@ -269,11 +197,6 @@ def get_user_bookings(
 
     ).all()
 
-
-# ==========================================================
-# CANCEL BOOKING
-# ==========================================================
-
 @router.put(
     "/cancel/{booking_id}"
 )
@@ -281,10 +204,6 @@ def cancel_booking(
     booking_id: str,
     db: Session = Depends(get_db)
 ):
-
-    # ------------------------------------------------------
-    # FIND BOOKING
-    # ------------------------------------------------------
 
     booking = db.query(
         Booking
@@ -305,11 +224,6 @@ def cancel_booking(
 
         )
 
-
-    # ------------------------------------------------------
-    # CHECK ALREADY CANCELLED
-    # ------------------------------------------------------
-
     if booking.status == "cancelled":
 
         raise HTTPException(
@@ -319,11 +233,6 @@ def cancel_booking(
             detail="Booking is already cancelled"
 
         )
-
-
-    # ------------------------------------------------------
-    # CHECK REFUND POLICY
-    # ------------------------------------------------------
 
     if (
 
@@ -344,11 +253,6 @@ def cancel_booking(
             )
 
         )
-
-
-    # ------------------------------------------------------
-    # CANCEL BOOKING
-    # ------------------------------------------------------
 
     booking.status = "cancelled"
 
@@ -373,11 +277,6 @@ def cancel_booking(
 
     }
 
-
-# ==========================================================
-# GET BOOKED SEATS
-# ==========================================================
-
 @router.get(
     "/booked-seats/{movie_id}/{date}/{time}/{theatre}"
 )
@@ -395,10 +294,6 @@ def get_booked_seats(
 
 ):
 
-    # ------------------------------------------------------
-    # GET CONFIRMED BOOKINGS
-    # ------------------------------------------------------
-
     bookings = db.query(
         Booking
     ).filter(
@@ -415,13 +310,7 @@ def get_booked_seats(
 
     ).all()
 
-
-    # ------------------------------------------------------
-    # COLLECT SEATS
-    # ------------------------------------------------------
-
     booked_seats = []
-
 
     for booking in bookings:
 
@@ -430,11 +319,6 @@ def get_booked_seats(
             booked_seats.extend(
                 booking.seats
             )
-
-
-    # ------------------------------------------------------
-    # RETURN
-    # ------------------------------------------------------
 
     return {
 
