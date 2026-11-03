@@ -1,10 +1,5 @@
 from pydantic import BaseModel
 
-
-# ==================================================
-# CREATE SHOW TIMING
-# ==================================================
-
 class ShowTimingCreate(BaseModel):
 
     movie_id: int
@@ -16,11 +11,6 @@ class ShowTimingCreate(BaseModel):
     show_time: str
 
     price: int
-
-
-# ==================================================
-# RESPONSE
-# ==================================================
 
 class ShowTimingResponse(BaseModel):
 
