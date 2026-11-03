@@ -16,11 +16,6 @@ router = APIRouter(
     tags=["Locations"]
 )
 
-
-# ==================================================
-# GET ALL LOCATIONS
-# ==================================================
-
 @router.get(
     "/",
     response_model=list[LocationResponse]
@@ -37,11 +32,6 @@ def get_locations(
         )
         .all()
     )
-
-
-    # ------------------------------------------------
-    # GROUP AREAS BY CITY
-    # ------------------------------------------------
 
     grouped_locations = {}
 
@@ -78,10 +68,6 @@ def get_locations(
     )
 
 
-# ==================================================
-# CREATE LOCATION
-# ==================================================
-
 @router.post(
     "/",
     response_model=dict
@@ -91,9 +77,6 @@ def create_location(
     db: Session = Depends(get_db)
 ):
 
-    # ------------------------------------------------
-    # Check duplicate area in same city
-    # ------------------------------------------------
 
     existing_location = db.query(Location).filter(
 
@@ -116,11 +99,6 @@ def create_location(
             )
 
         )
-
-
-    # ------------------------------------------------
-    # Create location
-    # ------------------------------------------------
 
     new_location = Location(
 
@@ -170,11 +148,6 @@ def create_location(
 
     }
 
-
-# ==================================================
-# DELETE LOCATION
-# ==================================================
-
 @router.delete(
     "/{location_id}"
 )
@@ -212,19 +185,11 @@ def delete_location(
             "Location deleted successfully"
 
     }
-
-# ==================================================
-# DELETE ALL LOCATIONS, THEATRES AND SHOW TIMINGS
-# ==================================================
-
+    
 @router.delete("/admin/delete-all")
 def delete_all_locations(
     db: Session = Depends(get_db)
 ):
-
-    # ------------------------------------------------
-    # Delete all show timings first
-    # ------------------------------------------------
 
     show_timings_count = db.query(
         ShowTiming
@@ -237,11 +202,6 @@ def delete_all_locations(
         synchronize_session=False
     )
 
-
-    # ------------------------------------------------
-    # Delete all theatres
-    # ------------------------------------------------
-
     theatres_count = db.query(
         Theatre
     ).count()
@@ -253,11 +213,6 @@ def delete_all_locations(
         synchronize_session=False
     )
 
-
-    # ------------------------------------------------
-    # Delete all locations
-    # ------------------------------------------------
-
     locations_count = db.query(
         Location
     ).count()
@@ -268,11 +223,6 @@ def delete_all_locations(
     ).delete(
         synchronize_session=False
     )
-
-
-    # ------------------------------------------------
-    # Commit
-    # ------------------------------------------------
 
     db.commit()
 
