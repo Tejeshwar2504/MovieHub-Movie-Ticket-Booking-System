@@ -16,11 +16,6 @@ router = APIRouter(
     tags=["Show Timings"]
 )
 
-
-# ==================================================
-# GET ALL SHOW TIMINGS
-# ==================================================
-
 @router.get(
     "/",
     response_model=list[ShowTimingResponse]
@@ -33,11 +28,6 @@ def get_show_timings(
         ShowTiming
     ).all()
 
-
-# ==================================================
-# CREATE SHOW TIMING
-# ==================================================
-
 @router.post(
     "/",
     response_model=ShowTimingResponse
@@ -46,10 +36,6 @@ def create_show_timing(
     timing: ShowTimingCreate,
     db: Session = Depends(get_db)
 ):
-
-    # ----------------------------------------------
-    # Validate language
-    # ----------------------------------------------
 
     allowed_languages = [
         "Tamil",
@@ -70,11 +56,6 @@ def create_show_timing(
             )
         )
 
-
-    # ----------------------------------------------
-    # Validate price
-    # ----------------------------------------------
-
     if timing.price <= 0:
 
         raise HTTPException(
@@ -82,25 +63,12 @@ def create_show_timing(
             detail="Ticket price must be greater than 0."
         )
 
-
-    # ----------------------------------------------
-    # Validate show time
-    # ----------------------------------------------
-
     if not timing.show_time.strip():
 
         raise HTTPException(
             status_code=400,
             detail="Show time is required."
         )
-
-
-    # ----------------------------------------------
-    # Check duplicate timing
-    #
-    # Same movie + theatre + language
-    # + same show time is not allowed.
-    # ----------------------------------------------
 
     existing = db.query(
         ShowTiming
@@ -122,12 +90,7 @@ def create_show_timing(
                 "and show time."
             )
         )
-
-
-    # ----------------------------------------------
-    # Create show timing
-    # ----------------------------------------------
-
+        
     new_timing = ShowTiming(
 
         movie_id=timing.movie_id,
@@ -152,11 +115,6 @@ def create_show_timing(
 
     return new_timing
 
-
-# ==================================================
-# UPDATE SHOW TIMING
-# ==================================================
-
 @router.put(
     "/{timing_id}",
     response_model=ShowTimingResponse
@@ -166,10 +124,6 @@ def update_show_timing(
     timing: ShowTimingCreate,
     db: Session = Depends(get_db)
 ):
-
-    # ----------------------------------------------
-    # Find existing timing
-    # ----------------------------------------------
 
     existing = db.query(
         ShowTiming
@@ -184,11 +138,6 @@ def update_show_timing(
             status_code=404,
             detail="Show timing not found"
         )
-
-
-    # ----------------------------------------------
-    # Validate language
-    # ----------------------------------------------
 
     allowed_languages = [
         "Tamil",
@@ -209,11 +158,6 @@ def update_show_timing(
             )
         )
 
-
-    # ----------------------------------------------
-    # Validate price
-    # ----------------------------------------------
-
     if timing.price <= 0:
 
         raise HTTPException(
@@ -221,24 +165,12 @@ def update_show_timing(
             detail="Ticket price must be greater than 0."
         )
 
-
-    # ----------------------------------------------
-    # Validate show time
-    # ----------------------------------------------
-
     if not timing.show_time.strip():
 
         raise HTTPException(
             status_code=400,
             detail="Show time is required."
         )
-
-
-    # ----------------------------------------------
-    # Check duplicate timing
-    #
-    # Exclude the timing currently being edited.
-    # ----------------------------------------------
 
     duplicate = db.query(
         ShowTiming
@@ -262,11 +194,6 @@ def update_show_timing(
             )
         )
 
-
-    # ----------------------------------------------
-    # Update timing
-    # ----------------------------------------------
-
     existing.movie_id = timing.movie_id
 
     existing.theatre_id = timing.theatre_id
@@ -285,11 +212,6 @@ def update_show_timing(
 
     return existing
 
-
-# ==================================================
-# GET MOVIE + THEATRE TIMINGS
-# ==================================================
-
 @router.get(
     "/movie/{movie_id}/theatre/{theatre_id}",
     response_model=list[ShowTimingResponse]
@@ -307,11 +229,6 @@ def get_movie_theatre_timings(
         ShowTiming.theatre_id == theatre_id
     ).all()
 
-
-# ==================================================
-# GET MOVIE TIMINGS
-# ==================================================
-
 @router.get(
     "/movie/{movie_id}",
     response_model=list[ShowTimingResponse]
@@ -326,11 +243,6 @@ def get_movie_timings(
     ).filter(
         ShowTiming.movie_id == movie_id
     ).all()
-
-
-# ==================================================
-# GET MOVIE + LANGUAGE TIMINGS
-# ==================================================
 
 @router.get(
     "/movie/{movie_id}/language/{language}",
@@ -348,11 +260,6 @@ def get_movie_language_timings(
         ShowTiming.movie_id == movie_id,
         ShowTiming.language == language
     ).all()
-
-
-# ==================================================
-# GET MOVIE + THEATRE + LANGUAGE TIMINGS
-# ==================================================
 
 @router.get(
     "/movie/{movie_id}/theatre/{theatre_id}/language/{language}",
@@ -372,12 +279,7 @@ def get_movie_theatre_language_timings(
         ShowTiming.theatre_id == theatre_id,
         ShowTiming.language == language
     ).all()
-
-
-# ==================================================
-# DELETE SHOW TIMING
-# ==================================================
-
+    
 @router.delete(
     "/{timing_id}"
 )
