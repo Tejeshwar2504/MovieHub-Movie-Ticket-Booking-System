@@ -1,11 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-
-# ==========================================================
-# CREATE BOOKING
-# ==========================================================
-
 class BookingCreate(BaseModel):
 
     user_id: int
@@ -27,11 +22,6 @@ class BookingCreate(BaseModel):
     seats: List[str]
 
     price: int
-
-
-# ==========================================================
-# BOOKING RESPONSE
-# ==========================================================
 
 class BookingResponse(BaseModel):
 
